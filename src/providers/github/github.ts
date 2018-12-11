@@ -7,11 +7,22 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class GithubProvider {
 
+  readonly HOST = 'https://api.github.com';
+
   constructor(public http: HttpClient) {
   }
 
   getRepos(username) {
-    return this.http.get(`https://api.github.com/users/${username}/repos`);
+    return this.http.get(`${this.HOST}/users/${username}/repos`);
+  }
+
+  getMostStarredRepos() {
+    return this.http.get(`${this.HOST}/search/repositories`, {
+        params: {
+            q : 'stars:>0',
+            sort: 'stars'
+        }
+    });
   }
 
   getDetails(repo) {
